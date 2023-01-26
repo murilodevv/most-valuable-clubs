@@ -1,6 +1,5 @@
 import requests
 import pandas as pd
-import re
 from bs4 import BeautifulSoup
 
 headers = {'User-Agent': 
@@ -11,13 +10,17 @@ pageTree = requests.get(page, headers=headers)
 pageSoup = BeautifulSoup(pageTree.content, 'html.parser')
 
 teams = pageSoup.find_all("td", {'class' : "no-border-links hauptlink"})
-team_list = [i.text for i in teams]
 
 values = pageSoup.find_all("td", {'class': "rechts"})
-value_list = {i.text for i in values}
 
-dict = {}
 
-for i in teams:
-    dict = {'team': i.text, 'value': '0'}
-    print(dict)
+team_list = []
+value_list = []
+ 
+for i in range(0, 25):
+    team_list.append(teams[i].text)
+    value_list.append(values[i].text)
+
+df = pd.DataFrame({"Teams": team_list, "Values": value_list})
+
+df.to_csv('most-valuable-clubs.csv')
