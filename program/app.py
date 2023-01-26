@@ -10,9 +10,7 @@ pageTree = requests.get(page, headers=headers)
 pageSoup = BeautifulSoup(pageTree.content, 'html.parser')
 
 teams = pageSoup.find_all("td", {'class' : "no-border-links hauptlink"})
-
 values = pageSoup.find_all("td", {'class': "rechts"})
-
 
 team_list = []
 value_list = []
@@ -22,5 +20,4 @@ for i in range(0, 25):
     value_list.append(values[i].text)
 
 df = pd.DataFrame({"Teams": team_list, "Values": value_list})
-
 df.to_csv('most-valuable-clubs.csv')
